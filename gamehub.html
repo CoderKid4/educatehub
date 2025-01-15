@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Niam's Game Hub</title>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ff7e5f, #feb47b); /* Beautiful gradient background */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 1em 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+}
+
+/* Search Bar Styling */
+.search-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+}
+
+.search-bar {
+    padding: 10px;
+    width: 300px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    background-color: #fff;
+}
+
+/* Game Cards Layout */
+.game-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Smaller grid items */
+    gap: 15px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.game-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 15px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 250px;
+}
+
+.game-card img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.game-card h3 {
+    margin: 10px 0;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.game-card p {
+    font-size: 0.9em;
+    color: #777;
+}
+
+.game-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Game iframe container */
+.game-iframe-container {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+}
+
+.game-iframe-container iframe {
+    width: 80%;
+    height: 80%;
+    border: none;
+    border-radius: 10px;
+}
+
+/* Close Button Styling */
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #ff7e5f;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 1.2em;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.close-btn:hover {
+    background-color: #feb47b;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Niam's Game Hub</h1>
+    </header>
+    <div class="search-container">
+        <input type="text" class="search-bar" id="gameSearch" placeholder="Search games..." onkeyup="searchGames()">
+    </div>
+    <main>
+        <div class="game-container" id="gameContainer">
+            <!-- Full List of Games with Onclick to Show iframe -->
+            <div class="game-card" onclick="playGame('https://1v1.lol/')">
+                <img src="https://images.crazygames.com/games/1v1-lol/cover-1585728351086.png?auto=format,compress&q=75&cs=strip" alt="1v1.LOL">
+                <h3>1v1.LOL</h3>
+                <p>A multiplayer online battle game.</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://parshwa282011.github.io/10minutestilldawn/')">
+                <img src="https://static1.cbrimages.com/wordpress/wp-content/uploads/2022/05/10-Minutes-Till-Dawn-Header.jpg" alt="10 Minutes Till Dawn">
+                <h3>10 Minutes Till Dawn</h3>
+                <p>A survival game where you must last 10 minutes.</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://2048game.com')">
+                <img src="https://images.crazygames.com/games/2048/cover_16x9-1707828856995.png?auto=format,compress&q=75&cs=strip" alt="2048">
+                <h3>2048</h3>
+                <p>Merge tiles to get to the number 2048!</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://adarkroom.doublespeakgames.com/')">
+                <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/918530/header.jpg?t=1651052416" alt="A Dark Room">
+                <h3>A Dark Room</h3>
+                <p>A mysterious clicker game with hidden secrets.</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://parshwa282011.github.io/adventuredrivers/')">
+                <img src="https://imgs2.dab3games.com/adventure-drivers-ft-game.png" alt="Adventure Drivers">
+                <h3>Adventure Drivers</h3>
+                <p>Drive through the challenging adventure terrain.</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://freeasteroids.org/')">
+                <img src="https://preview.redd.it/5uvg9msd0hi21.jpg?width=640&crop=smart&auto=webp&s=c69bf7c6f880c6b5bf3e09861c7c0df553f28080" alt="Asteroids">
+                <h3>Asteroids</h3>
+                <p>Classic space shooter game with asteroids.</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://wwwtyro.github.io/Astray/')">
+                <img src="https://i.ytimg.com/vi/vZBINuM-Gmk/maxresdefault.jpg" alt="Astray">
+                <h3>Astray</h3>
+                <p>Explore and survive in a mystical world.</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://www.friv.cm/bad-ice-cream/fullscreen/')">
+                <img src="https://i.ytimg.com/vi/N44SziFShHQ/maxresdefault.jpg" alt="Bad Ice Cream">
+                <h3>Bad Ice Cream</h3>
+                <p>Help the ice cream collect fruit in this fun game.</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://parshwa282011.github.io/badicecream2/')">
+                <img src="https://www3.minijuegosgratis.com/v3/games/thumbnails/24137_1.jpg" alt="Bad Ice Cream 2">
+                <h3>Bad Ice Cream 2</h3>
+                <p>The ice cream is back with more levels!</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://www.friv.cm/bad-ice-cream-3/fullscreen/')">
+                <img src="https://cdn.nitrome.com/images/uploads/1004-1387561189-BIC_release_blog.png" alt="Bad Ice Cream 3">
+                <h3>Bad Ice Cream 3</h3>
+                <p>The third installment of the ice cream adventure.</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://parshwa282011.github.io/basketrandom/')">
+                <img src="https://imgs.crazygames.com/basket-random_16x9/20240617090207/basket-random_16x9-cover?auto=format%2Ccompress&q=45&cs=strip&ch=DPR&w=1200&h=630&fit=crop" alt="Basket Random">
+                <h3>Basket Random</h3>
+                <p>Random basketball challenges.</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://bounceback.3d2k.com/')">
+                <img src="https://picon.ngfiles.com/755000/flash_755171_card.webp?f1713247584" alt="Bounceback">
+                <h3>Bounceback</h3>
+                <p>A fun game involving bouncing balls and obstacles.</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://parshwa282011.github.io/boxingrandom/')">
+                <img src="https://imgs.crazygames.com/games/boxing-random/cover-1622139160089.jpeg?auto=format%2Ccompress&q=45&cs=strip&ch=DPR&w=1200&h=630&fit=crop" alt="Boxing Random">
+                <h3>Boxing Random</h3>
+                <p>Fight opponents in random boxing challenges.</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://parshwa282011.github.io/breaklock/')">
+                <img src="https://maxwellito.com/data/breaklock/cover.jpg" alt="BreakLock">
+                <h3>BreakLock</h3>
+                <p>A puzzle game where you break locks and move forward.</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://parshwa282011.github.io/breakout/')">
+                <img src="https://www.coolmathgames.com/sites/default/files/Breakout_OG-logo.jpg" alt="Breakout">
+                <h3>Breakout</h3>
+                <p>The classic brick-breaking arcade game.</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://parshwa282011.github.io/chess/')">
+                <img src="https://www.coolmathgames.com/sites/default/files/Chess_OG-logo.jpg" alt="Chess">
+                <h3>Chess</h3>
+                <p>The timeless strategy game.</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://parshwa282011.github.io/cookieclicker/')">
+                <img src="https://images.launchbox-app.com/9111ac4c-5d37-48c8-8845-fe4c563364ce.jpg" alt="Cookie Clicker">
+                <h3>Cookie Clicker</h3>
+                <p>Click to bake cookies and upgrade your bakery!</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://parshwa282011.github.io/cubefield/')">
+                <img src="https://i.ytimg.com/vi/YJ-ZYi-yfZQ/maxresdefault.jpg" alt="Cubefield">
+                <h3>Cubefield</h3>
+                <p>A 3D game where you avoid obstacles in space.</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://parshwa282011.github.io/doodlejump/')">
+                <img src="https://image.roku.com/developer_channels/prod/06ba017d47950e6c81e3bfb843e0b138cdff91b762ac5253e667a41554ecb427.png" alt="Doodle Jump">
+                <h3>Doodle Jump</h3>
+                <p>Jump up platforms and avoid falling.</p>
+            </div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/ducklife/')">
+    <img src="https://i.ytimg.com/vi/y-4PU5qgrck/maxresdefault.jpg" alt="Duck Life">
+    <h3>Duck Life</h3>
+    <p>Train your duck to win races!</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/ducklife3/')">
+    <img src="https://www.numuki.com/game/img/duck-life-3-evolution-4633.jpg" alt="Duck Life 3">
+    <h3>Duck Life 3</h3>
+    <p>Train your duck to become the best.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/ducklife4/')">
+    <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1461200/capsule_616x353.jpg?t=1707765561" alt="Duck Life 4">
+    <h3>Duck Life 4</h3>
+    <p>The fourth installment of Duck Life.</p>
+</div>
+
+            <div class="game-card" onclick="playGame('https://rbeesley.github.io/MicrosoftEdge-SURF/')">
+                <img src="https://i.pinimg.com/736x/7c/2c/96/7c2c965f748291be49183a48f85269af.jpg" alt="Edge Surf">
+                <h3>Edge Surf</h3>
+                <p>Ride the wave and avoid obstacles!</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://www.friv.cm/fireboy-and-watergirl/fullscreen/')">
+                <img src="https://www.gominigames.com/images/minigames/thumbnail/a55c9cc9c21e4fc683c8c6857f3d0c75-512x384.jpg" alt="Fireboy and Watergirl">
+                <h3>Fireboy and Watergirl</h3>
+                <p>Help Fireboy and Watergirl solve puzzles together!</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://freeflappybird.org/')">
+                <img src="https://mir-s3-cdn-cf.behance.net/projects/404/c4b80d143006427.Y3JvcCw4NjksNjgwLDI1LDA.png" alt="Flappy Bird">
+                <h3>Flappy Bird</h3>
+                <p>Help the bird fly through pipes without hitting them!</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://parshwa282011.github.io/geometrydash/')">
+                <img src="https://preview.redd.it/my-gd-thumbnail-for-my-youtube-video-video-down-below-v0-bak6k8hn3d9b1.jpg?auto=webp&s=5c07f826f12347b0862e804827a1a311ebcf0cc1" alt="Geometry Dash">
+                <h3>Geometry Dash</h3>
+                <p>Jump and dash your way through the levels!</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://krunker.io/')">
+                <img src="https://cdn.roosterteeth.com/image/upload/t_l/f_auto/3/8e50d77b-4256-45f7-b7cb-630c169a348e/original/1553636123.jpg" alt="Krunker IO">
+                <h3>Krunker.IO</h3>
+                <p>Enjoy this fast-paced first-person shooter game.</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://parshwa282011.github.io/vex5/')">
+                <img src="https://img.gamedistribution.com/f120262ab72743039fbce88c1f370df8-512x384.jpg" alt="Vex 5">
+                <h3>Vex 5</h3>
+                <p>Complete challenging obstacle courses.</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://shellshock.io')">
+                <img src="https://www.giantbomb.com/a/uploads/original/39/391699/3047251-title.jpg" alt="Shell Shockers">
+                <h3>Shell Shockers</h3>
+                <p>A multiplayer egg shooter game.</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://survev.io')">
+                <img src="https://tcf.admeen.org/game/17500/17345/400x246/surviv-io.jpg" alt="Surviv IO">
+                <h3>Surviv.IO</h3>
+                <p>A survival battle royale game.</p>
+            </div>
+            <div class="game-card" onclick="playGame('https://parshwa282011.github.io/tunnelrush')">
+    <img src="https://i.ytimg.com/vi/AaaXNVdIFFU/hqdefault.jpg" alt="Tunnel Rush">
+    <h3>Tunnel Rush</h3>
+    <p>Navigate through a tunnel filled with obstacles in this fast-paced game.</p>
+</div>
+                <div class="game-card" onclick="playGame('http://slither.com/io')">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmJEo-ugWCnycmwDK2ZXba-UaVtWDUJTDpFg&s" alt="Slither.io">
+    <h3>Slither.IO</h3>
+    <p>A snake-based multiplayer game where you grow by eating pellets and avoiding other snakes.</p>
+</div>
+<div class="game-card" onclick="playGame('https://zombsroyale.io/')">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGEwtH0IQ5abGEXtbrypuItKTJ4CeqyN2cGg&s" alt="ZombsRoyale.io">
+    <h3>ZombsRoyale.IO</h3>
+    <p>A battle royale game in a top-down view. Survive, loot, and fight other players.</p>
+</div>
+<div class="game-card" onclick="playGame('https://paper-io.com/')">
+    <img src="https://images.crazygames.com/games/paper-io-2/cover_16x9-1732742480791.png?auto=format,compress&q=75&cs=strip" alt="Paper.io 2">
+    <h3>Paper.IO 2</h3>
+    <p>Expand your territory by drawing lines and capturing zones, but beware of other players cutting your line.</p>
+</div>
+<div class="game-card" onclick="playGame('https://skribbl.io/')">
+    <img src="https://i.ytimg.com/vi/osHuRMu06Ao/maxresdefault.jpg" alt="Skribbl.io">
+    <h3>Skribbl.IO</h3>
+    <p>A fun drawing and guessing game to play with friends.</p>
+</div>
+<div class="game-card" onclick="playGame('https://ducklings.io/')">
+    <img src="https://i.ytimg.com/vi/-Z_H1xW25us/maxresdefault.jpg" alt="Ducklings.io">
+    <h3>Ducklings</h3>
+    <p>Rescue ducklings and build your nest in this relaxing multiplayer game.</p>
+</div>
+<div class="game-card" onclick="playGame('https://deeeep.io/')">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA85zWcUmgKERIet0n5J2H7XJ7BDHD7a_hiw&s" alt="Deeeep.io">
+    <h3>Diep.IO</h3>
+    <p>Dive into the ocean and evolve your creature to survive and dominate the depths.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/tetris/')">
+    <img src="https://i.ytimg.com/vi/wygHTOIby0A/sddefault.jpg?v=65821fe5" alt="Twitch Tetris">
+    <h3>Twitch Tetris</h3>
+    <p>A classic block puzzle game for solo or competitive play.</p>
+</div>
+<div class="game-card" onclick="playGame('https://www.lumpty.com/amusements/games/tetris/tetris.html')">
+    <img src="https://i.ytimg.com/vi/EUJb1BD63ME/maxresdefault.jpg" alt="Tetris">
+    <h3>Tetrus</h3>
+    <p>A classic block puzzle game for solo or competitive play.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/gopherkart/')">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYZWHrhWa3_FB4mPdZktWO8QrcBvZuZcCo0g&s" alt="Gopher Kart">
+    <h3>Gopher Kart</h3>
+    <p>A fast-paced kart racing game with exciting challenges.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/hextris/')">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTly2-dzTMDfPqIQYSx4OfIxmU8kJbcjx3WnA&s" alt="Hextris">
+    <h3>Hextris</h3>
+    <p>A fast-paced puzzle game inspired by Tetris with a hexagonal twist.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/iceagebabyadventure/')">
+    <img src="https://i.ytimg.com/vi/siFEEpOJMjY/maxresdefault.jpg" alt="Ice Age Baby Adventure">
+    <h3>Ice Age Baby Adventure</h3>
+    <p>Join the Ice Age baby on a fun-filled adventure.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/jumpingfrogspuzzle/')">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRy1d-ufRX7_8PRLfhDGxhU9WPjGeMgwRS-bg&s" alt="Jumping Frogs Puzzle">
+    <h3>Jumping Frogs Puzzle</h3>
+    <p>A challenging puzzle game where you help frogs jump to their destination.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/konnekt/')">
+    <img src="https://play-lh.googleusercontent.com/RrOhrmZZZ2Q6Q2-phraDOMu-GNbNwpuLl_-wMr_eUYkC2UOHYImwYLL_r9PEhYJk3A=w600-h300-pc0xffffff-pd" alt="Konnekt">
+    <h3>Konnekt</h3>
+    <p>A strategic game to connect tiles and solve puzzles.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/minecraft030/')">
+    <img src="https://i.ytimg.com/vi/_iQQWmnG7eY/sddefault.jpg" alt="Minecraft 0.30">
+    <h3>Minecraft 0.30</h3>
+    <p>Play the classic version of Minecraft and explore its origins.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/minecraft13/')">
+    <img src="https://i.ytimg.com/vi/mkkSCO67jgg/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBhC5UVVmHzyRsJl2Ca3vc8GGe_Ow" alt="Minecraft 1.3">
+    <h3>Minecraft 1.3</h3>
+    <p>Explore new features in this iconic version of Minecraft.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/minecraft152/')">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoAnenEDJmhIPpJfbEDYLlm2Kz_p1MRuJpig&s" alt="Minecraft 1.5.2">
+    <h3>Minecraft 1.5.2</h3>
+    <p>A nostalgic Minecraft version loved by many players.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/motox3m2/')">
+    <img src="https://i.ytimg.com/vi/89IlbH4GvoA/maxresdefault.jpg" alt="Moto X3M 2">
+    <h3>Moto X3M 2</h3>
+    <p>Perform stunts and race through exciting levels.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/ovo/')">
+    <img src="https://play-lh.googleusercontent.com/v7KwGdPjJGjJjRXn46sck4DwDBdKSeRzGN44CjiXUtKV0jjOi51Bt4wcXud0m-SkXg" alt="OvO">
+    <h3>OvO</h3>
+    <p>A platformer game where precision and speed are key.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/pacman/')">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPmQraHhVWYqRVgAgpvdDoyynk8d1GOEpu-g&s" alt="Pac-Man">
+    <h3>Pac-Man</h3>
+    <p>The classic arcade game where you eat pellets and avoid ghosts.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/pushback/')">
+    <img src="https://i.ytimg.com/vi/e6f1QoqncXE/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDigyJnPodxZta-yP_4FjN9dxs27w" alt="Pushback">
+    <h3>Pushback</h3>
+    <p>Defend yourself and push back enemies in this action-packed game.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/racer/')">
+    <img src="https://play-lh.googleusercontent.com/JJzCB885MuorbNDmFc4BbTN4N8ElSUNk8bpkGv9GAm8sL5zaolC735mZbObSelnYowDv=w526-h296-rw" alt="Racer">
+    <h3>Racer</h3>
+    <p>A thrilling racing game with intense competition.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/radiusraid/')">
+    <img src="https://m.gjcdn.net/game-thumbnail/500/26521-8shpcugp-v4.webp" alt="Radius Raid">
+    <h3>Radius Raid</h3>
+    <p>A space shooter game where you destroy enemies in radial formations.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/retrobowl/')">
+    <img src="https://cdn.sanity.io/images/e2vcw3ux/production/15b1cc2f46abdb7c48bcfb7291d0524076354c0f-301x167.png?auto=format" alt="Retro Bowl">
+    <h3>Retro Bowl</h3>
+    <p>Lead your team to victory in this retro-style football game.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/retrohaunt/')">
+    <img src="https://i.ytimg.com/vi/qxZec7M66dE/mqdefault.jpg" alt="Retrohaunt">
+    <h3>Retrohaunt</h3>
+    <p>An eerie and nostalgic game with a haunting twist.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/riddleschool/')">
+    <img src="https://m.gjcdn.net/game-thumbnail/500/143946-yfzripte-v4.webp" alt="Riddle School">
+    <h3>Riddle School</h3>
+    <p>Escape school by solving clever riddles and puzzles.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/slope/')">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_jOGkGj0Auir2Z0KqYkPVM0-RDgPR-6M5Gg&s" alt="Slope">
+    <h3>Slope</h3>
+    <p>Roll through exciting obstacles in this fast-paced game.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/snake/')">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS51ILvsFYeelfsKwdcQpy1dmB9kSJP3TpScA&s" alt="Snake">
+    <h3>Snake</h3>
+    <p>Control the snake and eat to grow while avoiding your own tail!</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/snowrider3d/')">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFSO2f6anlfm7vFOjH33-GZea3R5Y0_zxgog&s" alt="Snow Rider 3D">
+    <h3>Snow Rider 3D</h3>
+    <p>Race through snow-covered slopes in this 3D winter challenge.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/soccerrandom/')">
+    <img src="https://play-lh.googleusercontent.com/hzbIKYaCYoHRY1_0zFYsJDxgW_5AJc7SBoB8B64ZpkoO_lZiXbQzKaZowvkp1WKKQZI=w526-h296-rw" alt="Soccer Random">
+    <h3>Soccer Random</h3>
+    <p>A crazy soccer game with random mechanics and fun physics!</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/spacecompany/')">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlf8RXG0A5kgetO6nqiuhPzslV8glBSLio3g&s" alt="Space Company">
+    <h3>Space Company</h3>
+    <p>Build and manage your own space company in this strategy game.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/spaceinvaders/')">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5PwKti9sKK4IhhchYVo3I2wSQuWgMvfQHXA&s" alt="Space Invaders">
+    <h3>Space Invaders</h3>
+    <p>The iconic space shooter where you defend Earth from alien invaders.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/subway/')">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7yythG0upEdp5PMFcZPWfrIbL-TmKaN5gJg&s" alt="Subway">
+    <h3>Subway</h3>
+    <p>Navigate through the subway stations and avoid obstacles.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/thechromaincident/')">
+    <img src="https://img.gamepix.com/games/the-chroma-incident/cover/the-chroma-incident.png?w=400&ar=16:10" alt="The Chroma Incident">
+    <h3>The Chroma Incident</h3>
+    <p>A mysterious adventure where you solve puzzles and uncover secrets.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/thereisnogame/')">
+    <img src="https://i.ytimg.com/vi/HSCg1GcZFns/maxresdefault.jpg" alt="THERE IS NO GAME!">
+    <h3>THERE IS NO GAME!</h3>
+    <p>Break the fourth wall in this unique and humorous game.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/towermaster/')">
+    <img src="https://devforum-uploads.s3.dualstack.us-east-2.amazonaws.com/uploads/original/4X/3/f/2/3f2d114607af69e908769dd467a6b1f451a841c7.jpeg" alt="Tower Master">
+    <h3>Tower Master</h3>
+    <p>Build towers and strategize to defend against waves of enemies.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/tunnelrush/')">
+    <img src="https://i.ytimg.com/vi/AaaXNVdIFFU/hqdefault.jpg" alt="Tunnel Rush">
+    <h3>Tunnel Rush</h3>
+    <p>Navigate through a high-speed tunnel filled with obstacles.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/underrun/')">
+    <img src="https://play-lh.googleusercontent.com/cFtLZog0KjMhumiaZ7P5RvQ_LfRLVMJTQeNWxDr1ncuQUt32Uy73oDOmPbt0po1O0M8=w600-h300-pc0xffffff-pd" alt="Under Run">
+    <h3>Under Run</h3>
+    <p>Run and avoid obstacles in this fast-paced underground game.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/vex3/')">
+    <img src="https://www.gominigames.com/images/minigames/thumbnail/vex-3.jpeg" alt="Vex 3">
+    <h3>Vex 3</h3>
+    <p>Test your platforming skills in this challenging Vex game.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/vex4/')">
+    <img src="https://www.gominigames.com/images/minigames/thumbnail/vex-4.jpeg" alt="Vex 4">
+    <h3>Vex 4</h3>
+    <p>The next installment of the Vex series with even more tricky levels.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/vex5/')">
+    <img src="https://i.ytimg.com/vi/1Veka7LaCH4/maxresdefault.jpg" alt="Vex 5">
+    <h3>Vex 5</h3>
+    <p>Another exciting challenge in the Vex platformer series.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/vex6/')">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyv5eh0Iangx6fmDlmf-O8gMahbT7MlDKASQ&s" alt="Vex 6">
+    <h3>Vex 6</h3>
+    <p>Get ready for the ultimate test of agility and reflexes in Vex 6.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/vex7/')">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsIFIf4_qMRYJEDHAfe5wF-ZHyHk6VqB9xLw&s" alt="Vex 7">
+    <h3>Vex 7</h3>
+    <p>Experience the most difficult Vex game yet!</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/volleyrandom/')">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQovCnkP5mo0o-Uy6vO27BZIZXF1wkCUBFRZg&s" alt="Volley Random">
+    <h3>Volley Random</h3>
+    <p>A fun and unpredictable volleyball game with random elements.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/webretro/')">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFrJ9zYRp8R5qbJqzJJUMcnC-Z1ix0KnYFJw&s" alt="Webretro">
+    <h3>Webretro</h3>
+    <p>Emulate retro consoles and enjoy classic games on your browser.</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/worldshardestgame/')">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBRgE-D8qpAaTz1PETJb8GNKuLKfBOmaUjYQ&s" alt="World's Hardest Game">
+    <h3>World's Hardest Game</h3>
+    <p>Can you complete this insanely difficult game?</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/worldshardestgame2/')">
+    <img src="https://i.ytimg.com/vi/fwVTwyC05lc/maxresdefault.jpg" alt="World's Hardest Game 2">
+    <h3>World's Hardest Game 2</h3>
+    <p>The sequel to the world's hardest game, with even tougher levels!</p>
+</div>
+<div class="game-card" onclick="playGame('https://parshwa282011.github.io/xx142b2exe/')">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-VmXCH1nqPwNolwgnpf9s9e3UF7IRRTD5gA&s" alt="xx142-b2.exe">
+    <h3>xx142-b2.exe</h3>
+    <p>A mysterious and creepy game with unpredictable events.</p>
+</div>
+
+
+
+        </div>
+    </main>
+    <!-- Hidden iframe container -->
+    <div class="game-iframe-container" id="gameIframeContainer">
+        <button class="close-btn" onclick="closeGame()">Close</button>
+        <iframe id="gameIframe" src="" frameborder="0"></iframe>
+    </div>
+
+    <script>
+        function playGame(url) {
+            const iframeContainer = document.getElementById('gameIframeContainer');
+            const iframe = document.getElementById('gameIframe');
+            iframe.src = url;
+            iframeContainer.style.display = 'flex';
+        }
+
+        function closeGame() {
+            const iframeContainer = document.getElementById('gameIframeContainer');
+            const iframe = document.getElementById('gameIframe');
+            iframe.src = '';
+            iframeContainer.style.display = 'none';
+        }
+
+        function searchGames() {
+            const searchInput = document.getElementById('gameSearch').value.toLowerCase();
+            const gameCards = document.querySelectorAll('.game-card');
+            
+            gameCards.forEach(card => {
+                const gameTitle = card.querySelector('h3').textContent.toLowerCase();
+                const gameDescription = card.querySelector('p').textContent.toLowerCase();
+                if (gameTitle.includes(searchInput) || gameDescription.includes(searchInput)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
